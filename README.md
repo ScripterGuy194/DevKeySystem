@@ -1,5 +1,3 @@
-✅ README.md
-
 # DevKeySystem 🔐
 A simple, customizable Roblox Key System written entirely in Lua.  
 Built by [ScripterGuy194](https://github.com/ScripterGuy194)
