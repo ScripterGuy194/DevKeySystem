@@ -1,92 +1,82 @@
-📄 README.md
+✅ README.md
 
 # DevKeySystem 🔐
+A simple, customizable Roblox Key System written entirely in Lua.  
+Built by [ScripterGuy194](https://github.com/ScripterGuy194)
 
-A fully custom Lua-based key system for Roblox, built entirely from scratch by **@ScripterGuy194**.  
-Inspired by OopssSorry’s system — but 100% original, modular, and class-driven.
+## 📦 Features
+- Fully custom UI built with `Instance.new`
+- SaveKey support via `writefile/readfile`
+- Clipboard copying for key access
+- OnSuccess and OnFail callbacks
+- Custom ClassName: `DevKeySystem`
+- No external libraries, purely Lua-based
 
----
+## 🛠️ Setup
 
-## 🧩 Features
-
-- 🧱 Class-based system (`ClassName = "DevKeySystem"`)
-- 🔑 Key verification with customizable logic
-- 💾 Optional key saving using `writefile()` / `readfile()`
-- 📋 Clipboard support (copies key link with one click)
-- 🧰 Draggable GUI interface
-- ⚡ Lightweight & self-contained
-
----
-
-## 🚀 Usage
+### 1. Loader Script
+Place this in your executor or game loader:
 
 ```lua
 local DevKeySystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/ScripterGuy194/DevKeySystem/main/src/DevKeySystem.lua"))()
-local ks = DevKeySystem.new()
 
-ks:Init({
+local keySystem = DevKeySystem.new()
+keySystem:Init({
     Title = "Dev Key System",
-    Description = "Enter your developer key below.",
-    Key = "MY-SECRET-KEY",
+    Description = "Enter your access key below.",
+    Key = "abc123", -- Replace with your actual key
     SaveKey = true,
-    Verify = function(k)
-        return k == "MY-SECRET-KEY"
-    end
-})
-```
 
+    Verify = function(inputKey)
+        return inputKey == "abc123"
+    end,
+
+    OnSuccess = function()
+        print("✅ Key Correct!")
+        -- Your logic here
+        print("🔓 Access granted to protected features.")
+    end,
+
+    OnFail = function()
+        print("❌ Key Failed!")
+    end
+}) 
+```
 
 ---
 
-📂 File Structure
+2. File Structure
 ```
 DevKeySystem/
 ├── src/
-│   └── DevKeySystem.lua       # The main module class
-│
+│   └── DevKeySystem.lua     # Main source file (UI + logic)
 ├── example/
-│   └── loader.lua             # Usage example (copy-paste ready)
-│
-├── README.md                  # This file
-└── LICENSE                    # MIT License (open source)
+│   └── loader.lua           # Sample loader usage
+└── README.md                # You're reading it!
 ```
 
 ---
 
-🔧 Properties & API
+📚 Documentation
 
 Property	Description
 
-ClassName	Always "DevKeySystem"
-SaveKey	Saves the key locally if enabled
-KeyMatched	Becomes true once the key is verified
-KeyBox	TextBox reference for input field
+Title	UI window title
+Description	Message under the title
+Key	The valid key string
+SaveKey	Save key to local file using writefile
+Verify	Function to validate the entered key
+OnSuccess	Function to run if the key is correct
+OnFail	Function to run if the key is wrong
 
 
 
 ---
 
-🧠 Tips
+💡 Credits
 
-The key is stored as a .key file using the title as filename (e.g. devkeysystem.key)
+Inspired by the community and custom UI frameworks
 
-Make sure your executor supports writefile, readfile, setclipboard, etc.
+Designed by ScripterGuy194
 
-For extra security, obfuscate the loader or use external key fetching.
-
-
-
----
-
-📜 License
-
-This project is licensed under the MIT License.
-You are free to modify, redistribute, and use this system with proper credit.
-
-
----
-
-👤 Author
-
-Made by @ScripterGuy194
-Built with 💡 for Roblox developers and key-auth systems.
+No dependencies, pure Lua
