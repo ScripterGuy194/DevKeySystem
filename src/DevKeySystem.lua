@@ -124,16 +124,29 @@ function DevKeySystem:BuildUI()
 
 	enterBtn.MouseButton1Click:Connect(function()
 		local inputKey = keyBox.Text
-		local isValid = self.Settings.Verify and self.Settings.Verify(inputKey)
-		if isValid then
+		local success, result = pcall(self.Settings.Verify or function() end, inputKey)
+		if success and result then
 			self.KeyMatched = true
 			if self.SaveKey and writefile then
 				local file = (self.Settings.Title or "devkey"):gsub("%s", ""):lower() .. ".key"
 				writefile(file, inputKey)
 			end
+			if self.Settings.OnSuccess then
+				pcall(self.Settings.OnSuccess)
+			end
 			self:Close()
 		else
+			if not success then
+				game:GetService("StarterGui"):SetCore("SendNotification", {
+					Title = "Error",
+					Text = "Key verify crashed!",
+					Duration = 5
+				})
+			end
 			keyBox.Text = "Invalid Key!"
+			if self.Settings.OnFail then
+				pcall(self.Settings.OnFail)
+			end
 		end
 	end)
 
@@ -160,6 +173,9 @@ function DevKeySystem:Init(settings)
 			local savedKey = readfile(filename)
 			if self.Settings.Verify and self.Settings.Verify(savedKey) then
 				self.KeyMatched = true
+				if self.Settings.OnSuccess then
+					pcall(self.Settings.OnSuccess)
+				end
 				return true
 			end
 		end
